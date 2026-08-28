@@ -31,6 +31,8 @@ jobs:
           mkdir -p dist
           sing-box rule-set compile --output dist/spotify.srs    spotify/domain.json
           sing-box rule-set compile --output dist/spotify_ip.srs spotify/ip.json
+          sing-box rule-set compile --output dist/ai.srs         ai/domain.json
+          sing-box rule-set compile --output dist/ai_ip.srs      ai/ip.json
           ls -la dist
 
       - name: Publish to the latest release
