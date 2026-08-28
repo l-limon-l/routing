@@ -1,0 +1,17 @@
+# Дополнения к Services/google_ai.lst из itdoginfo/allow-domains.
+
+# Бэкенд Cloud AI Companion — сюда Antigravity и Gemini Code Assist шлют сами
+# запросы агента. Без него IDE открывается, но получает от Google
+# 400 FAILED_PRECONDITION "User location is not supported for the API use".
+cloudcode-pa.googleapis.com
+cloudaicompanion.googleapis.com
+daily-cloudcode-pa.googleapis.com
+
+# One Google Service — отдаёт сетку приложений в шапке Google. Пока он ходит
+# напрямую, Gemini в этой сетке не появляется.
+ogs.google.com
+
+# Стриминговый канал веб-Gemini и гейт AI-функций самого Chrome («Спросить Gemini»).
+jetski-webchannel.googleapis.com
+optimizationguide-pa.googleapis.com
+taskassist-pa.googleapis.com

@@ -15,7 +15,7 @@
 | `spotify/ip.json` | accesspoint/dealer Spotify | `releases/latest/download/spotify_ip.srs` |
 | `ai/domain.json` | домены ChatGPT/Sora и Claude (включая Claude Code) | `releases/latest/download/ai.srs` |
 | `ai/ip.json` | собственные подсети Anthropic | `releases/latest/download/ai_ip.srs` |
-| `google_ai_extra/domain.json` | бэкенд Antigravity и Gemini Code Assist | `releases/latest/download/google_ai_extra.srs` |
+| `google_ai/extra.lst` | список itdoginfo плюс то, чего в нём не хватает | `releases/latest/download/google_ai.srs` |
 
 ### Зачем Spotify отдельный IP-набор
 
@@ -40,20 +40,30 @@ ChatGPT лежат внутри `104.16.0.0/12` (весь Cloudflare целик�
 (`8.6.112.0/24`, `8.47.69.0/24` — по RDAP это Cloudflare, Inc.), и заворачивать их значило бы
 тащить в туннель чужой трафик.
 
-### Зачем дополнение к google_ai
+### Почему google_ai собирается, а не лежит файлом
 
-`google_ai.srs` у itdoginfo знает про `antigravity.google` и `antigravity.googleapis.com`,
-но не про бэкенд, куда IDE шлёт сами запросы агента. Из-за этого Antigravity уходил
-напрямую и получал от Google `User location is not supported for the API use`, хотя
-остальной трафик приложения шёл через прокси.
+`Services/google_ai.lst` у itdoginfo знает про `antigravity.google` и его `-pa`
+спутников, но не про бэкенд, куда IDE шлёт сами запросы агента. Antigravity из-за этого
+уходил напрямую и получал `400 FAILED_PRECONDITION — User location is not supported for
+the API use`, хотя остальной трафик приложения шёл через прокси. Наблюдаемый хостнейм —
+`daily-cloudcode-pa.googleapis.com`, он же значится в заголовке ответа как
+`X-Cloudaicompanion-Trace-Id`.
 
-Наблюдаемый хостнейм — `daily-cloudcode-pa.googleapis.com`; он же значится в заголовке
-ответа как `X-Cloudaicompanion-Trace-Id`. Здесь перечислены и суффиксы обоих семейств,
-и точный daily-хост: суффикс закрывает остальные каналы выпуска, если они появятся.
+Той же природы ещё три дырки: `ogs.google.com` отдаёт сетку приложений в шапке Google, и
+пока он ходит напрямую, Gemini в этой сетке не появляется; `jetski-webchannel` —
+стриминговый канал веб-Gemini; `optimizationguide-pa` гейтит AI-функции самого Chrome,
+включая «Спросить Gemini». Все четыре уходили в `direct-out`, это видно в логе ядра.
 
-Набор задуман как дополнение, а не замена: `google_ai` остаётся включённым, а это
-правило нужно повесить **на тот же узел**, иначе один аккаунт будет ходить в Google
-с двух разных стран.
+Копировать чужой список к себе разово смысла нет — копия устареет. Поэтому
+`scripts/compose_google_ai.py` тянет его на каждой сборке, добавляет `google_ai/extra.lst`
+и пишет `google_ai/domain.json` (он в `.gitignore`: это артефакт, а не исходник).
+Обновления itdoginfo приезжают сами, наши правки лежат отдельным файлом и видны в
+истории. Если апстрим вернёт пустой список, сборка падает, а не выкладывает огрызок.
+
+Набор заменяет `google_ai.srs` от itdoginfo целиком, поэтому в приложении источник
+«Сервисы Google AI» тянется отсюда и второе правило заводить не нужно. Осознанно не
+добавлены `www.google.com` и `clients4.google.com`: это поиск и проверка связности
+Chrome, через прокси ушло бы слишком много постороннего.
 
 ## Как добавить набор
 

@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - '**/*.json'
+      - '**/*.lst'
+      - 'scripts/**'
       - '.github/workflows/build.yml'
   workflow_dispatch:
   schedule:
@@ -26,6 +28,9 @@ jobs:
           sudo install "sing-box-${VER}-linux-amd64/sing-box" /usr/local/bin/sing-box
           sing-box version
 
+      - name: Compose google_ai from upstream plus our additions
+        run: python3 scripts/compose_google_ai.py
+
       - name: Compile rule-sets
         run: |
           mkdir -p dist
@@ -33,7 +38,7 @@ jobs:
           sing-box rule-set compile --output dist/spotify_ip.srs spotify/ip.json
           sing-box rule-set compile --output dist/ai.srs         ai/domain.json
           sing-box rule-set compile --output dist/ai_ip.srs      ai/ip.json
-          sing-box rule-set compile --output dist/google_ai_extra.srs google_ai_extra/domain.json
+          sing-box rule-set compile --output dist/google_ai.srs  google_ai/domain.json
           ls -la dist
 
       - name: Publish to the latest release
