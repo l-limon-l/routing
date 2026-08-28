@@ -11,6 +11,10 @@ daily-cloudcode-pa.googleapis.com
 # напрямую, Gemini в этой сетке не появляется.
 ogs.google.com
 
+# Seed вариаций (Finch) — из него Chrome берёт страну для гейтинга своих функций и
+# закрепляет её в Local State. Пока он ходит напрямую, браузер снова получает ru.
+clientservices.googleapis.com
+
 # Стриминговый канал веб-Gemini и гейт AI-функций самого Chrome («Спросить Gemini»).
 jetski-webchannel.googleapis.com
 optimizationguide-pa.googleapis.com
