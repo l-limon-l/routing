@@ -1,0 +1,46 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.json'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install sing-box
+        run: |
+          VER=1.11.15
+          curl -sSL "https://github.com/SagerNet/sing-box/releases/download/v${VER}/sing-box-${VER}-linux-amd64.tar.gz" | tar xz
+          sudo install "sing-box-${VER}-linux-amd64/sing-box" /usr/local/bin/sing-box
+          sing-box version
+
+      - name: Compile rule-sets
+        run: |
+          mkdir -p dist
+          sing-box rule-set compile --output dist/spotify.srs    spotify/domain.json
+          sing-box rule-set compile --output dist/spotify_ip.srs spotify/ip.json
+          ls -la dist
+
+      - name: Publish to the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view latest >/dev/null 2>&1; then
+            gh release upload latest dist/*.srs --clobber
+          else
+            gh release create latest dist/*.srs \
+              --title latest \
+              --notes "Rolling release. Rule-sets are rebuilt from the JSON sources on every push."
+          fi

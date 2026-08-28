@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "spotify.com",
+        "spotifycdn.com",
+        "spotifycdn.net",
+        "spotify-everywhere.com",
+        "byspotify.com",
+        "scdn.co",
+        "pscdn.co",
+        "spoti.fi"
+      ]
+    }
+  ]
+}
