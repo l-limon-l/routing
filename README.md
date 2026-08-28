@@ -15,6 +15,7 @@
 | `spotify/ip.json` | accesspoint/dealer Spotify | `releases/latest/download/spotify_ip.srs` |
 | `ai/domain.json` | домены ChatGPT/Sora и Claude (включая Claude Code) | `releases/latest/download/ai.srs` |
 | `ai/ip.json` | собственные подсети Anthropic | `releases/latest/download/ai_ip.srs` |
+| `google_ai_extra/domain.json` | бэкенд Antigravity и Gemini Code Assist | `releases/latest/download/google_ai_extra.srs` |
 
 ### Зачем Spotify отдельный IP-набор
 
@@ -38,6 +39,21 @@ ChatGPT лежат внутри `104.16.0.0/12` (весь Cloudflare целик�
 Адреса ChatGPT сюда не попадают осознанно: он живёт на общем аникасте Cloudflare
 (`8.6.112.0/24`, `8.47.69.0/24` — по RDAP это Cloudflare, Inc.), и заворачивать их значило бы
 тащить в туннель чужой трафик.
+
+### Зачем дополнение к google_ai
+
+`google_ai.srs` у itdoginfo знает про `antigravity.google` и `antigravity.googleapis.com`,
+но не про бэкенд, куда IDE шлёт сами запросы агента. Из-за этого Antigravity уходил
+напрямую и получал от Google `User location is not supported for the API use`, хотя
+остальной трафик приложения шёл через прокси.
+
+Наблюдаемый хостнейм — `daily-cloudcode-pa.googleapis.com`; он же значится в заголовке
+ответа как `X-Cloudaicompanion-Trace-Id`. Здесь перечислены и суффиксы обоих семейств,
+и точный daily-хост: суффикс закрывает остальные каналы выпуска, если они появятся.
+
+Набор задуман как дополнение, а не замена: `google_ai` остаётся включённым, а это
+правило нужно повесить **на тот же узел**, иначе один аккаунт будет ходить в Google
+с двух разных стран.
 
 ## Как добавить набор
 

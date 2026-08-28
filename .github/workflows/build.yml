@@ -33,6 +33,7 @@ jobs:
           sing-box rule-set compile --output dist/spotify_ip.srs spotify/ip.json
           sing-box rule-set compile --output dist/ai.srs         ai/domain.json
           sing-box rule-set compile --output dist/ai_ip.srs      ai/ip.json
+          sing-box rule-set compile --output dist/google_ai_extra.srs google_ai_extra/domain.json
           ls -la dist
 
       - name: Publish to the latest release

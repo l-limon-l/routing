@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "cloudcode-pa.googleapis.com",
+        "cloudaicompanion.googleapis.com"
+      ],
+      "domain": [
+        "daily-cloudcode-pa.googleapis.com"
+      ]
+    }
+  ]
+}
