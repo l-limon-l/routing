@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "epicgames.com",
+        "epicgames.dev",
+        "epicgamescdn.com",
+        "unrealengine.com",
+        "unrealtournament.com",
+        "fortnite.com",
+        "fab.com",
+        "easyanticheat.net",
+        "eac-cdn.com",
+        "easy.ac",
+        "artstation.com",
+        "sketchfab.com",
+        "quixel.com",
+        "quixel.se",
+        "twinmotion.com",
+        "capturingreality.com",
+        "realityscan.com",
+        "cubicmotion.com",
+        "hyprsense.com",
+        "3lateral.com",
+        "radgametools.com"
+      ],
+      "domain": [
+        "epicgames-download1.akamaized.net"
+      ]
+    }
+  ]
+}
