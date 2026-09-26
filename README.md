@@ -17,6 +17,7 @@
 | `ai/ip.json` | собственные подсети Anthropic | `releases/latest/download/ai_ip.srs` |
 | `google_ai/extra.lst` | список itdoginfo плюс то, чего в нём не хватает | `releases/latest/download/google_ai.srs` |
 | `epicgames/domain.json` | домены Epic Games: аккаунт, лаунчер, магазин, загрузки, EOS, анти-чит | `releases/latest/download/epicgames.srs` |
+| `anydesk/domain.json` | домены AnyDesk: сайт и сеть ретрансляторов `net.anydesk.com` | `releases/latest/download/anydesk.srs` |
 
 ### Зачем Spotify отдельный IP-набор
 
@@ -49,6 +50,18 @@ Robo Recall и прочие) тоже включены: они ничего не
 а не суффиксом: на капче при входе в аккаунт спотыкались в обсуждении, но
 заворачивать в прокси весь hCaptcha ради этого не стоит — его использует
 множество посторонних сайтов.
+
+### Зачем AnyDesk в прокси
+
+AnyDesk в реестре РКН нет, но его ретрансляторы (`boot.net.anydesk.com` и дальше
+`relay-*.net.anydesk.com`) стоят на OVH, CDN77 и GCore, а эти диапазоны ТСПУ режет
+целиком: TCP открывается, ClientHello уходит, ответа нет, и через 5–30 секунд
+соединение закрывается. Клиент при этом бесконечно висит на «Идёт соединение с сетью
+AnyDesk…». Через прокси те же серверы отвечают сразу.
+
+IP-набора нет по той же причине, что у Epic: своих адресов у AnyDesk нет, а пришпилить
+набор к OVH или CDN77 целиком значит завернуть в прокси чужие сайты. Клиент ходит к
+ретрансляторам по TLS с SNI, так что доменного набора хватает.
 
 ### Почему AI не берётся из Re-filter
 
