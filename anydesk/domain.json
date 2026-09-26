@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "anydesk.com",
+        "anydesk.de",
+        "anydesk.net"
+      ]
+    }
+  ]
+}
