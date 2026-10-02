@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "github.com",
+        "github.io",
+        "github.dev",
+        "github.blog",
+        "github.community",
+        "githubapp.com",
+        "githubassets.com",
+        "githubusercontent.com",
+        "githubcopilot.com",
+        "githubstatus.com",
+        "githubnext.com",
+        "ghcr.io",
+        "gh.io",
+        "git.io"
+      ],
+      "domain": [
+        "github-cloud.s3.amazonaws.com",
+        "github-production-release-asset-2e65be.s3.amazonaws.com",
+        "github-production-user-asset-6210df.s3.amazonaws.com",
+        "github-production-repository-file-5c1aeb.s3.amazonaws.com"
+      ]
+    }
+  ]
+}

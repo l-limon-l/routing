@@ -41,6 +41,8 @@ jobs:
           sing-box rule-set compile --output dist/google_ai.srs  google_ai/domain.json
           sing-box rule-set compile --output dist/epicgames.srs epicgames/domain.json
           sing-box rule-set compile --output dist/anydesk.srs   anydesk/domain.json
+          sing-box rule-set compile --output dist/github.srs    github/domain.json
+          sing-box rule-set compile --output dist/github_ip.srs github/ip.json
           ls -la dist
 
       - name: Publish to the latest release

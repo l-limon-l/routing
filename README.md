@@ -18,6 +18,8 @@
 | `google_ai/extra.lst` | список itdoginfo плюс то, чего в нём не хватает | `releases/latest/download/google_ai.srs` |
 | `epicgames/domain.json` | домены Epic Games: аккаунт, лаунчер, магазин, загрузки, EOS, анти-чит | `releases/latest/download/epicgames.srs` |
 | `anydesk/domain.json` | домены AnyDesk: сайт и сеть ретрансляторов `net.anydesk.com` | `releases/latest/download/anydesk.srs` |
+| `github/domain.json` | домены GitHub: сайт, API, raw/релизы, Pages, Copilot, ghcr.io | `releases/latest/download/github.srs` |
+| `github/ip.json` | собственные подсети GitHub (AS36459) | `releases/latest/download/github_ip.srs` |
 
 ### Зачем Spotify отдельный IP-набор
 
@@ -62,6 +64,23 @@ AnyDesk…». Через прокси те же серверы отвечают 
 IP-набора нет по той же причине, что у Epic: своих адресов у AnyDesk нет, а пришпилить
 набор к OVH или CDN77 целиком значит завернуть в прокси чужие сайты. Клиент ходит к
 ретрансляторам по TLS с SNI, так что доменного набора хватает.
+
+### Зачем GitHub в прокси
+
+GitHub в реестре РКН нет, но ТСПУ его замедляет: страницы грузятся рывками, `git clone`
+и скачивание релизов ползут или рвутся. Re-filter тут не помогает — в нём только
+`api.github.com` и домены Copilot, а `github.com`, `githubusercontent.com` (raw, релизы,
+аватарки) и `githubassets.com` (статика сайта) идут мимо.
+
+В отличие от Epic и AnyDesk, у GitHub своё адресное пространство, поэтому есть и
+IP-набор: шесть блоков из `git`/`web`/`api` в `api.github.com/meta`, все в AS36459.
+Он нужен для `git` по SSH — там нет SNI, и доменное правило соединение на `github.com:22`
+не видит. Азуровские `/32` из того же `meta` не включены: это региональные инстансы
+GHE.com, к обычному github.com они отношения не имеют.
+
+Отдельными доменами стоят старые S3-бакеты релизов и вложений: часть ссылок на ассеты
+до сих пор редиректит туда, а не на `objects.githubusercontent.com`. Весь
+`s3.amazonaws.com` в прокси не уходит.
 
 ### Почему AI не берётся из Re-filter
 
