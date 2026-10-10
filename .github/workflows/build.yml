@@ -31,6 +31,9 @@ jobs:
       - name: Compose google_ai from upstream plus our additions
         run: python3 scripts/compose_google_ai.py
 
+      - name: Compose aws from Amazon's published ranges
+        run: python3 scripts/compose_aws.py
+
       - name: Compile rule-sets
         run: |
           mkdir -p dist
@@ -43,6 +46,8 @@ jobs:
           sing-box rule-set compile --output dist/anydesk.srs   anydesk/domain.json
           sing-box rule-set compile --output dist/github.srs    github/domain.json
           sing-box rule-set compile --output dist/github_ip.srs github/ip.json
+          sing-box rule-set compile --output dist/aws.srs       aws/domain.json
+          sing-box rule-set compile --output dist/aws_ip.srs    aws/ip.json
           ls -la dist
 
       - name: Publish to the latest release

@@ -20,6 +20,8 @@
 | `anydesk/domain.json` | домены AnyDesk: сайт и сеть ретрансляторов `net.anydesk.com` | `releases/latest/download/anydesk.srs` |
 | `github/domain.json` | домены GitHub: сайт, API, raw/релизы, Pages, Copilot, ghcr.io | `releases/latest/download/github.srs` |
 | `github/ip.json` | собственные подсети GitHub (AS36459) | `releases/latest/download/github_ip.srs` |
+| `aws/domain.json` | GameLift и Global Accelerator | `releases/latest/download/aws.srs` |
+| `scripts/compose_aws.py` | подсети EC2 и Global Accelerator из `ip-ranges.json` Amazon | `releases/latest/download/aws_ip.srs` |
 
 ### Зачем Spotify отдельный IP-набор
 
@@ -81,6 +83,18 @@ GHE.com, к обычному github.com они отношения не имею�
 Отдельными доменами стоят старые S3-бакеты релизов и вложений: часть ссылок на ассеты
 до сих пор редиректит туда, а не на `objects.githubusercontent.com`. Весь
 `s3.amazonaws.com` в прокси не уходит.
+
+### Зачем AWS
+
+Игровые серверы многих игр (Chivalry 2 и другие на GameLift) стоят в EC2, и у части
+провайдеров эти адреса режутся по IP. zapret тут не помогает: обманывать нечего, пакеты
+до адресов просто не доходят. Нужен туннель.
+
+Подсети берутся из официального `ip-ranges.amazonaws.com/ip-ranges.json` на каждой
+сборке: Amazon меняет их часто. Только EC2 и Global Accelerator — весь сервис `AMAZON`
+включает S3 и CloudFront, то есть заметную часть обычных сайтов. По той же причине
+доменный набор не берёт `amazonaws.com` целиком, а только GameLift. Игры ходят к серверам
+по IP, поэтому основную работу делает IP-набор.
 
 ### Почему AI не берётся из Re-filter
 

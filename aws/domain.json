@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "awsglobalaccelerator.com"
+      ],
+      "domain_regex": [
+        "^gamelift[.-]([a-z0-9-]+\\.)*amazonaws\\.com$"
+      ]
+    }
+  ]
+}
